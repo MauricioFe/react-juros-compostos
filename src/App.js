@@ -2,28 +2,51 @@ import React, { useState, useEffect } from 'react';
 import Form from './components/Form';
 
 export default function App() {
-  const [capitalInicial, setCapitalInicial] = useState(0);
-  const [taxaMensal, setTaxaMensal] = useState(0);
-  const [periodo, setPeriodo] = useState(0);
-  const [bacon, setBacon] = useState([]);
+  const [initialValue, setInitialValue] = useState(1000);
+  const [monthlyInterest, setMonthlyInterest] = useState(1);
+  const [monthlyPeriod, setMonthlyPeriod] = useState(1);
+  const [installments, setInstallments] = useState([]);
 
   useEffect(() => {
-    let juros =0;
-    for (let i = 1; i <= periodo; i++){
-     juros = (capitalInicial * (taxaMensal / 100 +1) ** i).toFixed(2);
+    calculateInterest(initialValue, monthlyInterest, monthlyPeriod);
+  }, [initialValue, monthlyInterest, monthlyPeriod])
+
+  /**
+   * let juros =0;
+    for (let i = 1; i <= monthlyPeriod; i++){
+     juros = (initialValue * (monthlyInterest / 100 +1) ** i).toFixed(2);
      console.log(juros)
     }
-   
-  }, [capitalInicial, taxaMensal, periodo])
+   * 
+   */
 
+  const calculateInterest = (initialValue, monthlyInterest, monthlyPeriod) => {
+    const newInstallments = [];
+    let currentId = 1;
+    let currentValue = initialValue;
+    let percentage = 0;
+    for (let i = 1; i <= monthlyPeriod; i++) {
+      const percentValue = (currentValue * monthlyInterest) / 100;
+      currentValue = monthlyInterest >= 0 ? currentValue + percentValue : currentValue - percentValue;
+      percentage = (currentValue / initialValue - 1) * 100;
+      newInstallments.push({
+        id: currentId++,
+        value: currentValue,
+        difference: currentValue - initialValue,
+        percentage,
+        profit: monthlyInterest > 0,
+      })
+    }
+    setInstallments(newInstallments);
+  }
   const handlePeriodChange = (period) => {
-    setPeriodo(period);
+    setMonthlyPeriod(period);
   }
   const handleCapitalChange = (capital) => {
-    setCapitalInicial(capital);
+    setInitialValue(capital);
   }
   const handleTaxChange = (tax) => {
-    setTaxaMensal(tax);
+    setMonthlyInterest(tax);
   }
 
   return (
