@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Form from './components/Form';
-import Instalments from './components/Instalments';
+import Installments from './components/Installments';
 
 export default function App() {
   const [initialValue, setInitialValue] = useState(1000);
@@ -61,7 +61,7 @@ export default function App() {
     <div className='container'>
       <h1 className='center'>React juros compostos</h1>
       <Form data={{ initialValue, monthlyInterest, monthlyPeriod }} onChangeData={handleChangeData} />
-      <Instalments />
+      <Installments data={installments}/>
     </div>
   );
 }
