@@ -1,4 +1,21 @@
 import React from 'react'
+const moneyFormatter = Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+})
+function formatMoney(value) {
+    return moneyFormatter.format(value);
+}
+function formatMoneyPositiveNegative(value) {
+    const money = moneyFormatter.format(value);
+    if (value >= 0) {
+        return `+${money}`
+    }
+    return money;
+}
+function formatPercentage(value) {
+    return value.toFixed(2).replace('.', ',') + '%'
+}
 
 export default function Installment({ data }) {
     const { id, value, difference, percentage, profit } = data;
@@ -12,11 +29,11 @@ export default function Installment({ data }) {
     return (
         <div className="col s6 m3 l2">
             <div className='card' style={styles.flexRow}>
-                <span  style={{marginRight: '5px'}}>{id}</span>
+                <span style={{ marginRight: '5px' }}>{id}</span>
                 <div>
-                    <div>{value}</div>
-                    <div>{difference}</div>
-                    <div>{percentage}</div>
+                    <div className={classValue}>{formatMoney(value)}</div>
+                    <div className={classValue}>{formatMoneyPositiveNegative(difference)}</div>
+                    <div className={classPercentage}>{formatPercentage(percentage)}</div>
                 </div>
             </div>
         </div>
@@ -24,12 +41,13 @@ export default function Installment({ data }) {
 }
 
 const styles = {
-    flexRow :{
+    flexRow: {
         display: 'flex',
         flexDirection: 'colunm',
+        justifyContent:'space-around',
         alignItems: 'center',
         borderRadius: '4px',
         padding: '4px',
-        margin:'4px',
+        margin: '4px',
     }
 }
