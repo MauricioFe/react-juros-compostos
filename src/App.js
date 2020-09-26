@@ -37,6 +37,7 @@ export default function App() {
         profit: monthlyInterest > 0,
       })
     }
+    console.log(newInstallments);
     setInstallments(newInstallments);
   }
 
