@@ -39,20 +39,26 @@ export default function App() {
     }
     setInstallments(newInstallments);
   }
-  const handlePeriodChange = (period) => {
-    setMonthlyPeriod(period);
-  }
-  const handleCapitalChange = (capital) => {
-    setInitialValue(capital);
-  }
-  const handleTaxChange = (tax) => {
-    setMonthlyInterest(tax);
+
+  const handleChangeData = (newValue, newInterest, newPeriod) => {
+    if (newValue !== null) {
+      setInitialValue(newValue);
+      return;
+    }
+    if (newInterest !== null) {
+      setMonthlyInterest(newInterest);
+      return;
+    }
+    if (newPeriod !== null) {
+      setMonthlyPeriod(newPeriod);
+      return;
+    }
   }
 
   return (
     <div className='container'>
       <h1 className='center'>React juros compostos</h1>
-      <Form onChangePeriod={handlePeriodChange} onChangeCapital={handleCapitalChange} onChangeTax={handleTaxChange} />
+      <Form data={{ initialValue, monthlyInterest, monthlyPeriod }} onChangeData={handleChangeData} />
     </div>
   );
 }
